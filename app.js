@@ -3,14 +3,14 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const { urlencoded } = require("body-parser");
 const mongoose = require("mongoose");
-const encrypt = require("mongoose-encryption");
-const md5 = require("md5")
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
+// const encrypt = require("mongoose-encryption");
+// const md5 = require("md5")
+// const bcrypt = require("bcrypt");
+// const saltRounds = 10;
 const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
+// const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const findOrCreate = require("mongoose-findorcreate");
 
 const app = express();
@@ -59,7 +59,6 @@ passport.deserializeUser(function (id, done) {
     });
 });
 
-// astraUserSchema.plugin(encrypt, { encryptedFields: ["password"] });
 
 
 app.get("/", function (req, res) {
@@ -73,18 +72,18 @@ app.get("/login", function (req, res) {
     res.render("login");
 });
 app.get("/posts", function (req, res) {
-    // res.render("posts");
-    userPost.find({}, function (err, foundUsers) {
-        if (err) {
-            console.log(err);
-        } else {
-            if (foundUsers) {
-                res.render("posts", { userPosts: foundUsers });
+    if (req.user) {
+        userPost.find({}, function (err, foundUsers) {
+            if (err) {
+                console.log(err);
+            } else {
+                if (foundUsers) {
+                    res.render("posts", { userPosts: foundUsers });
+                }
             }
+        });
+    }
 
-
-        }
-    });
 });
 app.get("/check", function (req, res) {
     res.render("check");
@@ -99,23 +98,7 @@ app.get('/logout', function (req, res) {
     });
 });
 
-
 app.post("/register", function (req, res) {
-
-    // bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
-    //     const newUser = new astraUser({
-    //         email: req.body.username,
-    //         // password: md5(req.body.password),
-    //         password: hash
-    //     });
-    //     newUser.save(function (err) {
-    //         if (err) {
-    //             console.log(err);
-    //         } else {
-    //             res.render("posts");
-    //         }
-    //     });
-    // });
     astraUser.register({ username: req.body.username }, req.body.password, function (err, astraUser) {
         if (err) {
             console.log(err);
@@ -142,19 +125,6 @@ app.post("/login", function (req, res) {
             });
         }
     })
-    // const username = req.body.username;
-    // const password = (req.body.password)
-
-    // astraUser.findOne({ email: username }, function (err, foundUser) {
-    //     if (err) {
-    //         console.log(err);
-    //     } else {
-    //         if (foundUser) {
-    //             console.log(foundUser.email);
-    //             res.redirect("/posts");
-    //         }
-    //     }
-    // });
 });
 app.post("/posts", function (req, res) {
     const newPost = new userPost({
