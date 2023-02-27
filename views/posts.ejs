@@ -1,0 +1,50 @@
+<%- include('partials/header') %>
+
+    <div class="container d-flex mt-5">
+        <div class="col-3">
+            <div class="container">
+                <div class="card ">
+                    <div class="card-header card text-center bg-dark text-white">
+                        Post Something
+                    </div>
+                    <form action="/posts" method="post" class="card-body">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Title</label>
+                            <input type="text" class="form-control" name="title" id="exampleFormControlInput1"
+                                placeholder="">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleFormControlTextarea1" class="form-label">Post</label>
+                            <textarea class="form-control" name="post" id="exampleFormControlTextarea1"
+                                rows="5"></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-dark text-center">Post</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="container">
+                <div class="card-header card text-center bg-dark text-white">
+                    Featured
+                </div>
+                <div class="card text-center">
+                    <div class="card-body">
+                        <% userPosts.reverse().forEach(function(user){ %>
+                            <h5 class="card-title pt-2">
+                                <%= user.title %>
+                            </h5>
+                            <p class="card-text mb-2">
+                                <%= user.body %>
+                            </p>
+                            <a href="#" class="btn btn-dark">Read More</a>
+                            <% }); %>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
