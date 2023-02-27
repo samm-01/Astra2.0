@@ -1,3 +1,7 @@
 body {
   background-color: #e8ecef;
 }
+
+.navbar-nav {
+  flex-direction: row;
+}
