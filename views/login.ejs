@@ -1,40 +1,58 @@
 <%- include('partials/header') %>
-    <div class="container mt-5 ps-5">
-        <h1>Login Your Credentials</h1>
-        <div class="row">
-            <div class="col-sm-7">
-                <div class="card">
-                    <div class="card-body">
-                        <form action="/login" method="post">
-                            <div class="mb-3 mt-2">
-                                <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-                                <div class="col-sm-12">
-                                    <input type="email" class="form-control" name="username" id="" value="">
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-                                <div class="col-sm-12">
-                                    <input type="password" class="form-control" name="password" id="inputPassword">
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-dark float-right">Login</button>
-                        </form>
-                    </div>
+<section>
+  <div class="container mt-5 ps-5">
+    <h1>Login Your Credentials</h1>
+    <div class="row">
+      <div class="col-sm-7">
+        <div class="card">
+          <div class="card-body">
+            <form action="/login" method="post">
+              <div class="mb-3 mt-2">
+                <label for="staticEmail" class="col-sm-2 col-form-label"
+                  >Email</label
+                >
+                <div class="col-sm-12">
+                  <input
+                    type="email"
+                    class="form-control"
+                    name="username"
+                    id=""
+                    value=""
+                  />
                 </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="card social-block">
-                    <div class="card-body">
-                        <a class="btn btn-block" href="/auth/google" role="button">
-                            <i class="fab fa-google"></i>
-                            Sign Up with Google
-                        </a>
-                    </div>
+              </div>
+              <div class="mb-3">
+                <label for="inputPassword" class="col-sm-2 col-form-label"
+                  >Password</label
+                >
+                <div class="col-sm-12">
+                  <input
+                    type="password"
+                    class="form-control"
+                    name="password"
+                    id="inputPassword"
+                  />
                 </div>
-            </div>
+              </div>
+              <button type="submit" class="btn btn-dark float-right">
+                Login
+              </button>
+            </form>
+          </div>
         </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card social-block">
+          <div class="card-body">
+            <a class="btn btn-block" href="/auth/google" role="button">
+              <i class="fab fa-google"></i>
+              Sign Up with Google
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</section>
 
-
-    <%- include('partials/footer') %>
+<%- include('partials/footer') %>

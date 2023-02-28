@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -58,20 +58,21 @@ passport.deserializeUser(function (id, done) {
         done(err, astraUser);
     });
 });
+
 // Login with Google --
-passport.use(new GoogleStrategy({
-    clientID: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:8000/auth/google/posts",
-    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
-},
-    function (accessToken, refreshToken, profile, cb) {
-        console.log(profile);
-        astraUser.findOrCreate({ googleId: profile.id }, function (err, astraUser) {
-            return cb(err, astraUser);
-        });
-    }
-));
+// passport.use(new GoogleStrategy({
+//     clientID: process.env.CLIENT_ID,
+//     clientSecret: process.env.CLIENT_SECRET,
+//     callbackURL: "http://localhost:8000/auth/google/posts",
+//     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
+// },
+//     function (accessToken, refreshToken, profile, cb) {
+//         console.log(profile);
+//         astraUser.findOrCreate({ googleId: profile.id }, function (err, astraUser) {
+//             return cb(err, astraUser);
+//         });
+//     }
+// ));
 
 
 // Get Requests --
@@ -167,6 +168,6 @@ app.post("/posts", function (req, res) {
     })
 });
 
-app.listen(8000, function () {
+app.listen(3000, function () {
     console.log("Server started in 8000");
 });
