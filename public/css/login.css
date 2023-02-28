@@ -13,6 +13,8 @@ body {
   font-family: "Montserrat", sans-serif;
   height: 100vh;
   margin: -20px 0 50px;
+  position: fixed;
+  width: 100%;
 }
 
 h1 {
@@ -45,8 +47,8 @@ a {
 
 button {
   border-radius: 20px;
-  border: 1px solid #ff4b2b;
-  background-color: #ff4b2b;
+  border: 1px solid #0f457f;
+  background-color: #0f457f;
   color: #ffffff;
   font-size: 12px;
   font-weight: bold;
