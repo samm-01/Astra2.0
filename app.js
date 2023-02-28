@@ -34,6 +34,7 @@ mongoose.connect("mongodb://localhost:27017/astraUserDB", { useNewUrlParser: tru
 mongoose.set('strictQuery', true);
 
 const astraUserSchema = new mongoose.Schema({
+    name: String,
     email: String,
     password: String,
     googleId: String,
@@ -60,19 +61,19 @@ passport.deserializeUser(function (id, done) {
 });
 
 // Login with Google --
-// passport.use(new GoogleStrategy({
-//     clientID: process.env.CLIENT_ID,
-//     clientSecret: process.env.CLIENT_SECRET,
-//     callbackURL: "http://localhost:8000/auth/google/posts",
-//     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
-// },
-//     function (accessToken, refreshToken, profile, cb) {
-//         console.log(profile);
-//         astraUser.findOrCreate({ googleId: profile.id }, function (err, astraUser) {
-//             return cb(err, astraUser);
-//         });
-//     }
-// ));
+passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: "http://localhost:8000/auth/google/posts",
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
+},
+    function (accessToken, refreshToken, profile, cb) {
+        // console.log(profile);
+        astraUser.findOrCreate({ googleId: profile.id }, function (err, astraUser) {
+            return cb(err, astraUser);
+        });
+    }
+));
 
 
 // Get Requests --
@@ -84,7 +85,7 @@ app.get("/register", function (req, res) {
     res.render("register");
 });
 app.get("/login", function (req, res) {
-    res.render("login");
+    res.render("register");
 });
 app.get("/auth/google",
     passport.authenticate("google", { scope: ['profile'] })
@@ -127,7 +128,7 @@ app.get('/logout', function (req, res) {
 
 // Post Requests --
 app.post("/register", function (req, res) {
-    astraUser.register({ username: req.body.username }, req.body.password, function (err, astraUser) {
+    astraUser.register({ username: req.body.username, name: req.body.name }, req.body.password, function (err, astraUser) {
         if (err) {
             console.log(err);
             res.redirect("/login");
@@ -168,6 +169,6 @@ app.post("/posts", function (req, res) {
     })
 });
 
-app.listen(3000, function () {
+app.listen(8000, function () {
     console.log("Server started in 8000");
 });
