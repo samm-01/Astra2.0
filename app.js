@@ -49,6 +49,7 @@ const userPost = new mongoose.model("userPost", astraUserSchema);
 
 passport.use(astraUser.createStrategy());
 
+// Passport Serializer Deserializer --
 passport.serializeUser(function (astraUser, done) {
     done(null, astraUser.id);
 });
@@ -57,6 +58,7 @@ passport.deserializeUser(function (id, done) {
         done(err, astraUser);
     });
 });
+// Login with Google --
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
@@ -72,7 +74,7 @@ passport.use(new GoogleStrategy({
 ));
 
 
-
+// Get Requests --
 app.get("/", function (req, res) {
     res.render("home");
 });
@@ -90,9 +92,9 @@ app.get("/auth/google",
 app.get("/auth/google/posts",
     passport.authenticate("google", { failureRedirect: "/login" }),
     function (req, res) {
-        // Successful authentication, redirect home.
         res.redirect('/posts');
     });
+
 app.get("/posts", function (req, res) {
     if (req.user) {
         userPost.find({}, function (err, foundUsers) {
@@ -122,11 +124,12 @@ app.get('/logout', function (req, res) {
     });
 });
 
+// Post Requests --
 app.post("/register", function (req, res) {
     astraUser.register({ username: req.body.username }, req.body.password, function (err, astraUser) {
         if (err) {
             console.log(err);
-            res.redirect("/register");
+            res.redirect("/login");
         } else {
             passport.authenticate("local")(req, res, function () {
                 res.redirect("/posts");
