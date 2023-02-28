@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -10,11 +11,10 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
-// const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const findOrCreate = require("mongoose-findorcreate");
 
 const app = express();
-
 
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
@@ -26,7 +26,6 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
-
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -58,6 +57,19 @@ passport.deserializeUser(function (id, done) {
         done(err, astraUser);
     });
 });
+passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: "http://localhost:8000/auth/google/posts",
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
+},
+    function (accessToken, refreshToken, profile, cb) {
+        console.log(profile);
+        astraUser.findOrCreate({ googleId: profile.id }, function (err, astraUser) {
+            return cb(err, astraUser);
+        });
+    }
+));
 
 
 
@@ -71,6 +83,16 @@ app.get("/register", function (req, res) {
 app.get("/login", function (req, res) {
     res.render("login");
 });
+app.get("/auth/google",
+    passport.authenticate("google", { scope: ['profile'] })
+);
+
+app.get("/auth/google/posts",
+    passport.authenticate("google", { failureRedirect: "/login" }),
+    function (req, res) {
+        // Successful authentication, redirect home.
+        res.redirect('/posts');
+    });
 app.get("/posts", function (req, res) {
     if (req.user) {
         userPost.find({}, function (err, foundUsers) {
@@ -82,6 +104,8 @@ app.get("/posts", function (req, res) {
                 }
             }
         });
+    } else {
+        res.redirect("/login")
     }
 
 });
@@ -141,5 +165,5 @@ app.post("/posts", function (req, res) {
 });
 
 app.listen(8000, function () {
-    console.log("Server started in 3000");
+    console.log("Server started in 8000");
 });
