@@ -30,7 +30,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect("mongodb://localhost:27017/astraUserDB", { useNewUrlParser: true });
+mongoose.connect("mongodb+srv://sameergarg006:AmYb7vRCSDKK8Z5Q@cluster0.1xrbco1.mongodb.net/?retryWrites=true&w=majority", { useNewUrlParser: true });
+
 mongoose.set('strictQuery', true);
 
 const astraUserSchema = new mongoose.Schema({
